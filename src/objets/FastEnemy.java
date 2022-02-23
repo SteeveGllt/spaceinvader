@@ -7,8 +7,8 @@ import java.awt.*;
 public class FastEnemy extends GameObject{
     public FastEnemy(float x, float y, ID id){
         super(x, y, id);
-        velX = 10;
-        velY = 10;
+        velX = 7;
+        velY = 7;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class FastEnemy extends GameObject{
     }
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.black);
+        g.setColor(Color.pink);
         g.fillRect((int)x, (int)y, 16, 16);
     }
 

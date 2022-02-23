@@ -20,6 +20,8 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     private Spawn spawn;
     private Random r;
+    private Menu menu;
+    public static ID gameState = ID.Menu;
 
 
     public Game() {
@@ -27,7 +29,8 @@ public class Game extends Canvas implements Runnable {
         setFocusable(true);
         Handler handler = new Handler();
         Health health = new Health();
-
+        menu = new Menu();
+        this.addMouseListener(new MouseInput(menu));
         this.addKeyListener(new KeyInput(handler));
         spawn = new Spawn(handler, health);
        // handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
@@ -87,7 +90,12 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        spawn.tick();
+        if(spawn != null && gameState == ID.Game){
+            spawn.tick();
+        }else if(spawn != null && gameState == ID.Menu){
+            menu.tick();
+        }
+
     }
 
     private void render() {
@@ -97,9 +105,15 @@ public class Game extends Canvas implements Runnable {
             return;
         }
         Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.yellow);
+        g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        spawn.render(g);
+
+        if (spawn != null && gameState == ID.Game) {
+            spawn.render(g);
+        } else if (gameState == ID.Menu)
+        {
+            menu.render(g);
+        }
         g.dispose();
         bs.show();
     }

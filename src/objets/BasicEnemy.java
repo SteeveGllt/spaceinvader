@@ -7,8 +7,8 @@ import java.awt.*;
 public class BasicEnemy extends GameObject {
     public BasicEnemy(float x, float y, ID id){
         super(x, y , id);
-        velX = 5;
-        velY = 5;
+        velX = 3;
+        velY = 3;
     }
 
     @Override

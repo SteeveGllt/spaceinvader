@@ -30,12 +30,12 @@ public class Player extends GameObject{
     @Override
     public void render(Graphics g) {
         g.setColor(Color.blue);
-        g.fillOval((int)x, (int)y, 32, 32);
+        g.fillOval((int)x, (int)y, 16, 16);
     }
 
     @Override
     public Rectangle getBounds(){
-        return new Rectangle((int)x, (int)y, 32, 32);
+        return new Rectangle((int)x, (int)y, 16, 16);
     }
 
     public void collision(){

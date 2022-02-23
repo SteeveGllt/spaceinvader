@@ -37,7 +37,7 @@ public class SmartEnemy extends GameObject {
     }
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect((int)x, (int)y, 16, 16);
     }
 
