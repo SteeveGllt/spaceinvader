@@ -23,8 +23,8 @@ public class SmartEnemy extends GameObject {
     public  void tick(){
         x += velX;
         y += velY;
-        float diffX = x - player.getX() - 16;
-        float diffY = y - player.getY() - 16;
+        float diffX = x - player.getX() - -3;
+        float diffY = y - player.getY() - -3;
         float distance = (float) Math.sqrt((x - player.getX()) * (x - player.getX()) + (y - player.getY()) * (y - player.getY()));
         velX = ((-1 / distance) * diffX) * 3;
         velY = ((-1 / distance) * diffY) * 3;

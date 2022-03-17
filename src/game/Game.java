@@ -3,34 +3,38 @@ package game;
 import music.MusiqueFond;
 import objets.*;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
     public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
     private Boolean running = false;
-    private Thread thread;
+    public static Thread thread;
     private Spawn spawn;
     private Random r;
     private Menu menu;
+    private MenuPause menuPause;
+    private Help menuHelp;
+    private GameOver gameOver;
+    private MenuDifficulte menuDifficulte;
+    private Health health;
+    private Handler handler;
     public static ID gameState = ID.Menu;
 
 
     public Game() {
         new Window(WIDTH, HEIGHT, "Space Invaders By Ryry", this);
         setFocusable(true);
-        Handler handler = new Handler();
-        Health health = new Health();
+        handler = new Handler();
+        health = new Health();
         menu = new Menu();
-        this.addMouseListener(new MouseInput(menu));
+        menuPause = new MenuPause();
+        menuHelp = new Help();
+        gameOver = new GameOver(health);
+        menuDifficulte = new MenuDifficulte();
+        this.addMouseListener(new MouseInput(menu, this));
         this.addKeyListener(new KeyInput(handler));
         spawn = new Spawn(handler, health);
        // handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
@@ -58,10 +62,18 @@ public class Game extends Canvas implements Runnable {
             return true;
         } else return var <= min;
     }
+    public void reload(){
+        health.setScore(0);
+        health.setLevel(0);
+        Health.HEALTH = 100;
+        handler.clearEnemies();
+        GameOver.pseudo = "";
+
+    }
 
     @Override
     public void run() {
-        MusiqueFond musiqueFond = new MusiqueFond();
+        MusiqueFond musiqueFond = new MusiqueFond("Coco.wav");
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -94,6 +106,16 @@ public class Game extends Canvas implements Runnable {
             spawn.tick();
         }else if(spawn != null && gameState == ID.Menu){
             menu.tick();
+        }else if(gameState == ID.Pause){
+            menuPause.tick();
+        }
+        else if(gameState == ID.Menu){
+            menuHelp.tick();
+        }
+        else if(gameState == ID.GameOver){
+            gameOver.tick();
+        } else if(gameState == ID.MenuDifficulte){
+            menuDifficulte.tick();
         }
 
     }
@@ -114,6 +136,22 @@ public class Game extends Canvas implements Runnable {
         {
             menu.render(g);
         }
+        else if(gameState == ID.Pause)
+        {
+            menuPause.render(g);
+        }
+        else if(gameState == ID.Help)
+        {
+            menuHelp.render(g);
+        }
+        else if(gameState == ID.GameOver)
+        {
+            gameOver.render(g);
+        }
+        else if(gameState == ID.MenuDifficulte)
+        {
+            menuDifficulte.render(g);
+        }
         g.dispose();
         bs.show();
     }
@@ -132,6 +170,7 @@ public class Game extends Canvas implements Runnable {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         new Game();
