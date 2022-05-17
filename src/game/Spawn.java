@@ -1,10 +1,11 @@
 package game;
 
-import netscape.javascript.JSObject;
+import builder.builders.BasicEnemyBuilder;
+import builder.builders.FastEnemyBuilder;
+import builder.director.Director;
 import objets.*;
 
 import java.awt.*;
-import java.util.LinkedHashMap;
 import java.util.Random;
 
 public class Spawn {
@@ -13,14 +14,25 @@ public class Spawn {
     private int keepScore = -1;
     private Random r;
     BossEnemy b = null;
+    Director director;
+    BasicEnemyBuilder basicEnemyBuilder;
+    FastEnemyBuilder fastEnemyBuilder;
     public static int difficulte = 1;
 
     public Spawn(Handler handler, Health health){
         r = new Random();
         this.handler = handler;
         this.health = health;
-    }
+        //enemyPrototype1 = new BasicEnemyBuilder(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy);
+        director = new Director();
+        basicEnemyBuilder = new BasicEnemyBuilder();
+        fastEnemyBuilder = new FastEnemyBuilder();
+        director.constructBasicEnemy(basicEnemyBuilder);
+        director.constructFastEnemy(fastEnemyBuilder);
 
+
+
+    }
     public void tick(){
         if(keepScore == -1){
             handler.add(new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler));
@@ -34,9 +46,11 @@ public class Spawn {
             keepScore = 0;
             health.setLevel(health.getLevel() + 1);
             if(difficulte == 1){
+
                 if(health.getLevel() == 1){
-                    handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
+                    //handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
                 }
                 if(health.getLevel() == 10){
                     b = new BossEnemy(Game.WIDTH/2, 100, ID.BossEnemy);
