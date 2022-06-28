@@ -1,6 +1,7 @@
 package game;
 
 import builder.builders.BasicEnemyBuilder;
+import builder.builders.BossEnemyBuilder;
 import builder.builders.FastEnemyBuilder;
 import builder.director.Director;
 import objets.*;
@@ -13,10 +14,11 @@ public class Spawn {
     private Health health;
     private int keepScore = -1;
     private Random r;
-    BossEnemy b = null;
     Director director;
     BasicEnemyBuilder basicEnemyBuilder;
     FastEnemyBuilder fastEnemyBuilder;
+    BossEnemyBuilder bossEnemyBuilder;
+    builder.enemies.BossEnemy bo;
     public static int difficulte = 1;
 
     public Spawn(Handler handler, Health health){
@@ -27,10 +29,10 @@ public class Spawn {
         director = new Director();
         basicEnemyBuilder = new BasicEnemyBuilder();
         fastEnemyBuilder = new FastEnemyBuilder();
+        bossEnemyBuilder = new BossEnemyBuilder();
         director.constructBasicEnemy(basicEnemyBuilder);
         director.constructFastEnemy(fastEnemyBuilder);
-
-
+        director.constructBossEnemy(bossEnemyBuilder);
 
     }
     public void tick(){
@@ -53,11 +55,14 @@ public class Spawn {
                     handler.objects.add(fastEnemyBuilder.getResult());
                 }
                 if(health.getLevel() == 10){
-                    b = new BossEnemy(Game.WIDTH/2, 100, ID.BossEnemy);
-                    handler.objects.add(b);
+                    bo = bossEnemyBuilder.getResult();
+                    handler.objects.add(bo);
                 }
                 if(health.getLevel() > 10){
-                    handler.add(new BasicEnemy(b.getX(), b.getY(), ID.Enemy));
+
+                    handler.add(new builder.enemies.BasicEnemy(bo.getX(), bo.getY(), ID.Enemy, 5, 5));
+                    System.out.println(bo.getX());
+                    System.out.println(bo.getY());
                 }
                 if(health.getLevel() == 20){
                     handler.clearEnemies();
@@ -65,25 +70,25 @@ public class Spawn {
 
                 }
                 if(health.getLevel() > 20 && health.getLevel() < 30){ //&& health.getLevel() < 10
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
+                    handler.objects.add(basicEnemyBuilder.getResult());
                 }
                 if(health.getLevel() > 45){
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
+                    handler.objects.add(fastEnemyBuilder.getResult());
                 }
                 if(health.getLevel() == 50){
                     handler.clearEnemies();
                 }
                 if(health.getLevel() > 60){
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
-                    handler.objects.add(new BasicEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.Enemy));
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
+                    handler.objects.add(basicEnemyBuilder.getResult());
 
                     handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
                     handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
@@ -93,15 +98,15 @@ public class Spawn {
                     handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
                     handler.objects.add(new SmartEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.SmartEnemy, handler));
 
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
-                    handler.objects.add(new FastEnemy(r.nextInt(Game.WIDTH - 16), r.nextInt(Game.HEIGHT - 16), ID.FastEnemy));
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
+                    handler.objects.add(fastEnemyBuilder.getResult());
                 }
             }
             if(difficulte == 2){
