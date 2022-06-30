@@ -61,8 +61,6 @@ public class Spawn {
                 if(health.getLevel() > 10){
 
                     handler.add(new builder.enemies.BasicEnemy(bo.getX(), bo.getY(), ID.Enemy, 5, 5));
-                    System.out.println(bo.getX());
-                    System.out.println(bo.getY());
                 }
                 if(health.getLevel() == 20){
                     handler.clearEnemies();
